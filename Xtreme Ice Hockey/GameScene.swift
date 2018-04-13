@@ -9,16 +9,17 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    var upperPaddle = SKSpriteNode()
-    var lowerPaddle = SKSpriteNode()
+    var upperPaddle = SKShapeNode()
+    var lowerPaddle = SKShapeNode()
     var puck = SKShapeNode()
     
     override func didMove(to view: SKView)
     {
         makePuck()
         makeLowerPaddle()
+        makeUpperPaddle()
     }
     
     func makePuck()
@@ -35,7 +36,7 @@ class GameScene: SKScene {
         puck.physicsBody?.isDynamic = false
         // use precise collision detection
         puck.physicsBody?.usesPreciseCollisionDetection = true
-        // no loss os energy from friction
+        // no loss of energy from friction
         puck.physicsBody?.friction = 0
         // gravity is not a factor
         puck.physicsBody?.affectedByGravity = false
@@ -50,13 +51,26 @@ class GameScene: SKScene {
     
     func makeLowerPaddle()
     {
-        lowerPaddle = SKSpriteNode(color: UIColor.red, size: CGSize(width: frame.width/4, height: 50))
+        lowerPaddle = SKShapeNode(circleOfRadius: 70)
         lowerPaddle.position = CGPoint(x: frame.midX, y: frame.minY + 125)
+        lowerPaddle.strokeColor = UIColor.black
+        lowerPaddle.fillColor = UIColor.red
         lowerPaddle.name = "lower paddle"
         lowerPaddle.physicsBody = SKPhysicsBody(circleOfRadius: 70)
         lowerPaddle.physicsBody?.isDynamic = false
         addChild(lowerPaddle)
     }
     
+    func makeUpperPaddle()
+    {
+        upperPaddle = SKShapeNode(circleOfRadius: 70)
+        upperPaddle.position = CGPoint(x: frame.midX, y: frame.maxY - 125)
+        upperPaddle.strokeColor = UIColor.black
+        upperPaddle.fillColor = UIColor.red
+        upperPaddle.name = "upper paddle"
+        upperPaddle.physicsBody = SKPhysicsBody(circleOfRadius: 70)
+        upperPaddle.physicsBody?.isDynamic = false
+        addChild(upperPaddle)
+    }
     
 }
